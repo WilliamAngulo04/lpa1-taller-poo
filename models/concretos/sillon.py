@@ -98,30 +98,11 @@ class Sillon(Asiento):
     def reclinar(self) -> str:
         """
         Simula la acción de reclinar el sillón.
-        
+
         Returns:
             str: Mensaje del resultado
         """
         if not self.es_reclinable:
             return "Este sillón no es reclinable."
         return "Sillón reclinado para mayor comodidad."
-        descripcion += f" Respaldo: {'Sí' if self._tiene_respaldo else 'No'}."
-        if self._material_tapizado:
-            descripcion += f" Tapizado: {self._material_tapizado}."
-        descripcion += f" Altura regulable: {'Sí' if self._altura_regulable else 'No'}."
-        descripcion += f" Ruedas: {'Sí' if self._tiene_ruedas else 'No'}."
-        return descripcion
-    
-    def regular_altura(self, nueva_altura: float) -> str:
-        """
-        Regula la altura del sillón si es posible.
-        Args:
-            nueva_altura: Nueva altura deseada para el sillón
-        Returns:
-            str: Mensaje indicando el resultado de la operación
-        """
-        if not self._altura_regulable:
-            return "Este sillón no tiene altura regulable."
-        # Aquí podríamos agregar lógica para validar la nueva altura, etc.
-        return f"Altura del sillón regulada a {nueva_altura} cm."
     

@@ -37,9 +37,6 @@ class Comedor:
         self._nombre = nombre
         self._mesa = mesa
         self._sillas = sillas if sillas is not None else []
-        pass
-    
-    # Implementar propiedades
     @property
     def nombre(self) -> str:
         """Getter para el nombre del comedor."""
@@ -200,13 +197,17 @@ class Comedor:
         
         return list(materiales)
     
+    def __len__(self) -> int:
+        """
+        Retorna el número de sillas en el comedor.
+        
+        Returns:
+            int: Número de sillas
+        """
+        return len(self._sillas)
+    
     def __str__(self) -> str:
         """Representación en cadena del comedor."""
         # Implementar representación
         return f"Comedor {self.nombre}: Mesa + {len(self._sillas)} sillas"
-    
-    def __len__(self) -> int:
-        """Retorna el número total de muebles en el comedor."""
-        # Implementar longitud
-        return 1 + len(self._sillas)  # mesa + sillas
 

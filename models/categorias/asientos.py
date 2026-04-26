@@ -4,7 +4,7 @@ Esta clase agrupa las características comunes de sillas, sillones y sofás.
 """
 
 from abc import ABC, abstractmethod
-from .mueble import Mueble
+from ..mueble import Mueble
 
 
 class Asiento(Mueble):
@@ -113,58 +113,19 @@ class Asiento(Mueble):
             str: Descripción completa del asiento
         """
         pass
-    #     """Setter para capacidad con validación."""
-    #     if value <= 0:
-    #         raise ValueError("La capacidad debe ser mayor a 0")
-    #     self._capacidad_personas = value
-    
-    def calcular_factor_comodidad(self) -> float:
-        """
-        Calcula un factor de comodidad basado en las características del asiento.
-        Este es un método concreto que pueden usar las clases hijas.
-        
-        Returns:
-            float: Factor multiplicador para el precio (1.0 = neutral)
-        """
-        # TODO: Implementar lógica de cálculo de comodidad
-        # Considerar factores como:
-        # - Si tiene respaldo (+0.1)
-        # - Material del tapizado (cuero +0.2, tela +0.1)
-        # - Capacidad de personas (más personas = más cómodo)
-        
-        factor = 1.0
-        
-        # TODO: Agregar lógica aquí
-        # if self.tiene_respaldo:
-        #     factor += 0.1
-        # 
-        # if self.material_tapizado:
-        #     if self.material_tapizado.lower() == "cuero":
-        #         factor += 0.2
-        #     elif self.material_tapizado.lower() == "tela":
-        #         factor += 0.1
-        
-        return factor
     
     def obtener_info_asiento(self) -> str:
         """
         Obtiene información específica del asiento.
         Método concreto auxiliar para las clases hijas.
-        
+
         Returns:
             str: Información detallada del asiento
         """
-        # TODO: Implementar retornando información del asiento
-        # info = f"Capacidad: {self.capacidad_personas} personas"
-        # info += f", Respaldo: {'Sí' if self.tiene_respaldo else 'No'}"
-        # if self.material_tapizado:
-        #     info += f", Tapizado: {self.material_tapizado}"
-        # return info
-        pass
+        info = f"Capacidad: {self.capacidad_personas} personas"
+        info += f", Respaldo: {'Sí' if self.tiene_respaldo else 'No'}"
+        if self.material_tapizado:
+            info += f", Tapizado: {self.material_tapizado}"
+        return info
     
-    # TODO: Mantener el método calcular_precio como abstracto
-    # Las clases concretas deben implementar su propio cálculo
-    
-    # TODO: Mantener el método obtener_descripcion como abstracto
-    # Cada tipo de asiento tendrá su propia descripción
 

@@ -39,9 +39,6 @@ class Silla(Asiento):
         self._altura_regulable = altura_regulable
         self._tiene_ruedas = tiene_ruedas
 
-        pass
-    
-    # TODO: Implementar propiedades para los nuevos atributos
     @property
     def altura_regulable(self) -> bool:
         """Getter para altura regulable."""
@@ -52,6 +49,16 @@ class Silla(Asiento):
         """Setter para altura regulable."""
         self._altura_regulable = value
     
+    @property
+    def tiene_ruedas(self) -> bool:
+        """Getter para si tiene ruedas."""
+        return self._tiene_ruedas
+    
+    @tiene_ruedas.setter
+    def tiene_ruedas(self, value: bool) -> None:
+        """Setter para si tiene ruedas."""
+        self._tiene_ruedas = value
+    
     def calcular_precio(self) -> float:
         """
         Implementa el cálculo de precio específico para sillas.
@@ -59,19 +66,12 @@ class Silla(Asiento):
         Returns:
             float: Precio final de la silla
         """
-        # Implementar cálculo de precio para silla
-
-        # 1. Comenzar con el precio base
         precio_final = self.precio_base
-        # 2. Aplicar factor de comodidad heredado
         precio_final *= self.calcular_factor_comodidad()
-        # 3. Agregar costos por características especiales
         if self.altura_regulable:
-            precio_final += 20.0  # Costo adicional por altura regulable
+            precio_final += 20.0
         if self.tiene_ruedas:
-            precio_final += 15.0  # Costo adicional por ruedas
-        # 4. Retornar precio redondeado a 2 decimales
-
+            precio_final += 15.0
         return round(precio_final, 2)
 
     def obtener_descripcion(self) -> str:
@@ -89,9 +89,7 @@ class Silla(Asiento):
         descripcion += f" Altura regulable: {'Sí' if self.altura_regulable else 'No'}."
         descripcion += f" Ruedas: {'Sí' if self.tiene_ruedas else 'No'}."
         return descripcion
-        
-        pass
-    
+
     def regular_altura(self, nueva_altura: int) -> str:
         """
         Simula la regulación de altura de la silla.
@@ -103,13 +101,10 @@ class Silla(Asiento):
         Returns:
             str: Mensaje del resultado de la operación
         """
-        # Implementar lógica de regulación
         if not self.altura_regulable:
             return "Esta silla no tiene altura regulable."
-        # Aquí podríamos agregar lógica para validar la nueva altura, etc.
         return f"Altura de la silla regulada a {nueva_altura} cm."
-        pass
-    
+
     def es_silla_oficina(self) -> bool:
         """
         Determina si la silla es adecuada para oficina.

@@ -4,7 +4,7 @@ Esta clase agrupa las características comunes de mesas, escritorios, etc.
 """
 
 from abc import ABC, abstractmethod
-from .mueble import Mueble
+from ..mueble import Mueble
 
 
 class Superficies(Mueble):

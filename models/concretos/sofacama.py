@@ -6,6 +6,7 @@ Esta clase hereda tanto de Sofa como de Cama.
 # Importar las clases padre
 from .sofa import Sofa
 from .cama import Cama
+from ..mueble import Mueble
 
 
 class SofaCama(Sofa, Cama):
@@ -33,19 +34,26 @@ class SofaCama(Sofa, Cama):
             mecanismo_conversion: Tipo de mecanismo de conversión (plegable, extensible, etc.)
             Otros argumentos se pasan a las clases padre
         """
-        # Inicializar Sofa primero (primer padre en MRO)
-        Sofa.__init__(self, nombre, material, color, precio_base, capacidad_personas,
-                      tiene_respaldo=True, material_tapizado=material_tapizado,
-                      es_modular=False, incluye_cojines=False)
+        # Inicializar la clase base común (Mueble) directamente
+        Mueble.__init__(self, nombre, material, color, precio_base)
         
-        # Inicializar Cama manualmente ya que no se puede llamar super() dos veces
+        # Inicializar atributos de Asiento (de Sofa)
+        self._capacidad_personas = capacidad_personas
+        self._tiene_respaldo = True
+        self._material_tapizado = material_tapizado
+        
+        # Inicializar atributos de Superficies (de Cama)
+        self._forma = "rectangular"  # Asumir forma para sofá-cama
+        self._tiene_cajones = False  # Sofá-cama generalmente no tiene cajones
+        
+        # Inicializar atributos específicos de Cama
         self._tamaño = tamaño_cama
         self._incluye_colchon = incluye_colchon
         self._tiene_cabecera = False  # Sofá-cama generalmente no tiene cabecera
         
         # Inicializar atributos únicos del sofá-cama
         self._mecanismo_conversion = mecanismo_conversion
-        self._modo_actual = "sofa"  # Puede ser "sofa" o "cama"
+        self._modo_actual = "sofa"
     
     @property
     def mecanismo_conversion(self) -> str:
@@ -75,29 +83,25 @@ class SofaCama(Sofa, Cama):
         Returns:
             str: Mensaje del resultado de la conversión
         """
-        # Implementar lógica de conversión
         if self._modo_actual == "cama":
             return "El sofá-cama ya está en modo cama"
-        
+
         self._modo_actual = "cama"
         return f"Sofá convertido a cama usando mecanismo {self.mecanismo_conversion}"
-        pass
-    
+
     def convertir_a_sofa(self) -> str:
         """
         Convierte la cama en sofá.
         Método específico del sofá-cama.
-        
+
         Returns:
             str: Mensaje del resultado de la conversión
         """
-        # Implementar lógica de conversión
         if self._modo_actual == "sofa":
             return "El sofá-cama ya está en modo sofá"
-        
+
         self._modo_actual = "sofa"
         return f"Cama convertida a sofá usando mecanismo {self.mecanismo_conversion}"
-        pass
     
     def calcular_precio(self) -> float:
         """
@@ -135,11 +139,10 @@ class SofaCama(Sofa, Cama):
     def obtener_descripcion(self) -> str:
         """
         Descripción que combina características de sofá y cama.
-        
+
         Returns:
             str: Descripción completa del sofá-cama
         """
-        # Crear descripción combinada
         descripcion = f"Sofá-cama '{self.nombre}' de {self.material} en color {self.color}."
         descripcion += f" Capacidad: {self.capacidad_personas} personas como sofá."
         if self.material_tapizado:
@@ -147,23 +150,19 @@ class SofaCama(Sofa, Cama):
         descripcion += f" Tamaño de cama: {self.tamaño_cama}."
         descripcion += f" Mecanismo: {self.mecanismo_conversion}."
         descripcion += f" Colchón incluido: {'Sí' if self.incluye_colchon else 'No'}."
-        descripcion += f" Modo actual: {self.modo_actual}."
         return descripcion
-    
+
     def obtener_capacidad_total(self) -> dict:
         """
-        Obtiene la capacidad tanto como sofá como cama.
-        Método único del sofá-cama.
-        
+        Obtiene las capacidades en ambos modos.
+
         Returns:
-            dict: Capacidades en ambos modos
+            dict: Diccionario con capacidades para sofá y cama
         """
-        # Implementar capacidades
-        capacidades = {
-            "como_sofa": self.capacidad_personas,
-            "como_cama": 2 if self.tamaño_cama in ["matrimonial", "queen", "king"] else 1
+        return {
+            "sofa": self.capacidad_personas,
+            "cama": 1 if self.tamaño_cama.lower() in ["individual", "single"] else 2
         }
-        return capacidades
     
     # Implementar método para verificar compatibilidad de modo
     def puede_usar_como_cama(self) -> bool:
