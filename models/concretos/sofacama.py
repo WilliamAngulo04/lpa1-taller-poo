@@ -33,22 +33,20 @@ class SofaCama(Sofa, Cama):
             mecanismo_conversion: Tipo de mecanismo de conversión (plegable, extensible, etc.)
             Otros argumentos se pasan a las clases padre
         """
-        # Inicializar usando las clases padre
-        # Nota: En herencia múltiple, solo se llama super().__init__ una vez
-        # Esto llama al primer padre en el MRO (Method Resolution Order)
-        super().__init__(nombre, material, color, precio_base, capacidad_personas, True, material_tapizado)
+        # Inicializar Sofa primero (primer padre en MRO)
+        Sofa.__init__(self, nombre, material, color, precio_base, capacidad_personas,
+                      tiene_respaldo=True, material_tapizado=material_tapizado,
+                      es_modular=False, incluye_cojines=False)
         
-        # Inicializar atributos específicos de cama
-        # Necesitamos configurar manualmente los atributos de Cama ya que solo se llama un __init__
-        self._tamaño_cama = tamaño_cama
+        # Inicializar Cama manualmente ya que no se puede llamar super() dos veces
+        self._tamaño = tamaño_cama
         self._incluye_colchon = incluye_colchon
+        self._tiene_cabecera = False  # Sofá-cama generalmente no tiene cabecera
         
         # Inicializar atributos únicos del sofá-cama
         self._mecanismo_conversion = mecanismo_conversion
         self._modo_actual = "sofa"  # Puede ser "sofa" o "cama"
-        pass
     
-    # Implementar propiedades para los nuevos atributos
     @property
     def mecanismo_conversion(self) -> str:
         """Getter para el mecanismo de conversión."""
@@ -58,6 +56,16 @@ class SofaCama(Sofa, Cama):
     def modo_actual(self) -> str:
         """Getter para el modo actual (sofa o cama)."""
         return self._modo_actual
+    
+    @property
+    def tamaño_cama(self) -> str:
+        """Getter para el tamaño de cama."""
+        return self._tamaño
+    
+    @property
+    def incluye_colchon(self) -> bool:
+        """Getter para si incluye colchón."""
+        return self._incluye_colchon
     
     def convertir_a_cama(self) -> str:
         """
@@ -132,13 +140,14 @@ class SofaCama(Sofa, Cama):
             str: Descripción completa del sofá-cama
         """
         # Crear descripción combinada
-        descripcion = f"Sofá-cama {self.nombre} fabricado en {self.material} color {self.color}."
-        descripcion += f"\n{self.obtener_info_asiento()}"
-        descripcion += f"\nTamaño de cama: {self.tamaño_cama}"
-        descripcion += f"\nMecanismo de conversión: {self.mecanismo_conversion}"
-        descripcion += f"\nColchón incluido: {'Sí' if self.incluye_colchon else 'No'}"
-        descripcion += f"\nModo actual: {self.modo_actual}"
-        descripcion += f"\nPrecio: ${self.calcular_precio():.2f}"
+        descripcion = f"Sofá-cama '{self.nombre}' de {self.material} en color {self.color}."
+        descripcion += f" Capacidad: {self.capacidad_personas} personas como sofá."
+        if self.material_tapizado:
+            descripcion += f" Tapizado: {self.material_tapizado}."
+        descripcion += f" Tamaño de cama: {self.tamaño_cama}."
+        descripcion += f" Mecanismo: {self.mecanismo_conversion}."
+        descripcion += f" Colchón incluido: {'Sí' if self.incluye_colchon else 'No'}."
+        descripcion += f" Modo actual: {self.modo_actual}."
         return descripcion
     
     def obtener_capacidad_total(self) -> dict:

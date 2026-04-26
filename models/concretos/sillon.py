@@ -1,53 +1,110 @@
 """
 Clase concreta Sillón.
+Implementa un mueble de asiento cómodo para una persona.
 """
-from ..categorias.asientos import Asiento
-class Sillon(Asiento):
-    def __init__(self, nombre: str, material: str, color: str, precio_base: float,
-                 tiene_respaldo: bool, material_tapizado: str, altura_regulable: bool, tiene_ruedas: bool):
-        """
-        Inicializa un nuevo sillón con sus características específicas.
-        Args:
-            nombre: Nombre del sillón
-            material: Material del sillón
-            color: Color del sillón
-            precio_base: Precio base del sillón
-            tiene_respaldo: Si el sillón tiene respaldo
-            material_tapizado: Material del tapizado (si lo tiene)
-            altura_regulable: Si el sillón tiene altura regulable
-            tiene_ruedas: Si el sillón tiene ruedas
-        """
-        super().__init__(nombre, material, color, precio_base, capacidad=1)
-        self._tiene_respaldo = tiene_respaldo
-        self._material_tapizado = material_tapizado
-        self._altura_regulable = altura_regulable
-        self._tiene_ruedas = tiene_ruedas
-        pass
 
+from ..categorias.asientos import Asiento
+
+
+class Sillon(Asiento):
+    """
+    Clase concreta que representa un sillón.
+    
+    Un sillón es un asiento cómodo individual, a menudo reclinable.
+    
+    Conceptos OOP aplicados:
+    - Herencia: Hereda de Asiento
+    - Polimorfismo: Implementa métodos abstractos de manera específica
+    - Encapsulación: Protege atributos específicos del sillón
+    """
+    
+    def __init__(self, nombre: str, material: str, color: str, precio_base: float,
+                 tiene_respaldo: bool = True, material_tapizado: str = None,
+                 es_reclinable: bool = False, tiene_reposapiés: bool = False):
+        """
+        Constructor del sillón.
+        
+        Args:
+            tiene_respaldo: Si tiene respaldo
+            material_tapizado: Material del tapizado
+            es_reclinable: Si es reclinable
+            tiene_reposapiés: Si tiene reposapiés
+            Otros argumentos heredados de Asiento
+        """
+        super().__init__(nombre, material, color, precio_base, capacidad_personas=1,
+                        tiene_respaldo=tiene_respaldo, material_tapizado=material_tapizado)
+        
+        self._es_reclinable = es_reclinable
+        self._tiene_reposapiés = tiene_reposapiés
+    
+    @property
+    def es_reclinable(self) -> bool:
+        """Getter para si es reclinable."""
+        return self._es_reclinable
+    
+    @es_reclinable.setter
+    def es_reclinable(self, value: bool) -> None:
+        """Setter para si es reclinable."""
+        self._es_reclinable = value
+    
+    @property
+    def tiene_reposapiés(self) -> bool:
+        """Getter para si tiene reposapiés."""
+        return self._tiene_reposapiés
+    
+    @tiene_reposapiés.setter
+    def tiene_reposapiés(self, value: bool) -> None:
+        """Setter para si tiene reposapiés."""
+        self._tiene_reposapiés = value
+    
     def calcular_precio(self) -> float:
         """
-        Calcula el precio final del sillón considerando sus características.
+        Implementa el cálculo de precio específico para sillones.
+        
         Returns:
             float: Precio final del sillón
         """
         precio_final = self.precio_base
-        if self._tiene_respaldo:
-            precio_final += 50.0  # Costo adicional por respaldo
-        if self._material_tapizado:
-            precio_final += 30.0  # Costo adicional por tapizado
-        if self._altura_regulable:
-            precio_final += 20.0  # Costo adicional por altura regulable
-        if self._tiene_ruedas:
-            precio_final += 15.0  # Costo adicional por ruedas
+        
+        # Factor de comodidad
+        precio_final *= self.calcular_factor_comodidad()
+        
+        # Reclinable aumenta precio significativamente
+        if self.es_reclinable:
+            precio_final *= 1.4
+        
+        # Reposapiés añade costo
+        if self.tiene_reposapiés:
+            precio_final += 40.0
+        
         return round(precio_final, 2)
     
     def obtener_descripcion(self) -> str:
         """
-        Obtiene una descripción detallada del sillón.
+        Implementa la descripción específica del sillón.
+        
         Returns:
             str: Descripción completa del sillón
         """
-        descripcion = f"Sillón '{self.nombre}' de material {self.material}, color {self.color}."
+        descripcion = f"Sillón '{self.nombre}' de {self.material} en color {self.color}."
+        if self.material_tapizado:
+            descripcion += f" Tapizado: {self.material_tapizado}."
+        if self.es_reclinable:
+            descripcion += " Reclinable."
+        if self.tiene_reposapiés:
+            descripcion += " Con reposapiés."
+        return descripcion
+    
+    def reclinar(self) -> str:
+        """
+        Simula la acción de reclinar el sillón.
+        
+        Returns:
+            str: Mensaje del resultado
+        """
+        if not self.es_reclinable:
+            return "Este sillón no es reclinable."
+        return "Sillón reclinado para mayor comodidad."
         descripcion += f" Respaldo: {'Sí' if self._tiene_respaldo else 'No'}."
         if self._material_tapizado:
             descripcion += f" Tapizado: {self._material_tapizado}."

@@ -32,11 +32,10 @@ class Silla(Asiento):
             Otros argumentos heredados de Asiento
         """
         # Llamar al constructor padre con capacidad fija de 1 persona
-        super().__init__(nombre, material, color, precio_base, capacidad=1)
+        super().__init__(nombre, material, color, precio_base, capacidad_personas=1,
+                        tiene_respaldo=tiene_respaldo, material_tapizado=material_tapizado)
         
         # Inicializar atributos específicos de la silla
-        self._tiene_respaldo = tiene_respaldo
-        self._material_tapizado = material_tapizado
         self._altura_regulable = altura_regulable
         self._tiene_ruedas = tiene_ruedas
 
