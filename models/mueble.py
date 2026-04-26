@@ -107,17 +107,7 @@ class Mueble(ABC):
 
     # Implementar método abstracto calcular_precio()
     # Este método debe ser implementado por todas las clases hijas
-    # Usa el decorador @abstractmethod
-    # def calcular_precio(self) -> float:
-    #     """
-    #     Calcula el precio final del mueble.
-    #     Este método debe ser implementado por cada clase concreta.
-    #     
-    #     Returns:
-    #         float: Precio final calculado
-    #     """
-    #     pass
-
+    # Usa el decorador
     @abstractmethod
     def calcular_precio(self) -> float:
         """
@@ -128,7 +118,7 @@ class Mueble(ABC):
             float: Precio final calculado
         """
         pass
-    
+
     # Implementar método abstracto obtener_descripcion()
     # Este método debe retornar una descripción detallada del mueble
     # def obtener_descripcion(self) -> str:
