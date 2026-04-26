@@ -3,13 +3,11 @@ Clase abstracta para muebles de asiento.
 Esta clase agrupa las características comunes de sillas, sillones y sofás.
 """
 
-# TODO: Importar la clase padre Mueble
-# from ..mueble import Mueble
-
-# TODO: Importar ABC y abstractmethod si es necesario
+from abc import ABC, abstractmethod
+from .mueble import Mueble
 
 
-class Asiento:
+class Asiento(Mueble):
     """
     Clase abstracta para todos los muebles donde las personas se sientan.
     
@@ -33,21 +31,88 @@ class Asiento:
             material_tapizado: Material del tapizado (opcional)
             Otros argumentos heredados de Mueble
         """
-        # TODO: Llamar al constructor de la clase padre usando super()
+        super().__init__(nombre, material, color, precio_base)
         
-        # TODO: Inicializar los atributos específicos de asiento
-        # Usar encapsulación con atributos privados
+        if capacidad_personas < 1:
+            raise ValueError("La capacidad de personas debe ser al menos 1")
+        self._capacidad_personas = capacidad_personas
+        self._tiene_respaldo = tiene_respaldo
+        self._material_tapizado = material_tapizado
+    
+    @property
+    def capacidad_personas(self) -> int:
+        """Getter para la capacidad de personas."""
+        return self._capacidad_personas
+    
+    @capacidad_personas.setter
+    def capacidad_personas(self, value: int) -> None:
+        """Setter para la capacidad de personas con validación."""
+        if value < 1:
+            raise ValueError("La capacidad de personas debe ser al menos 1")
+        self._capacidad_personas = value
+    
+    @property
+    def tiene_respaldo(self) -> bool:
+        """Getter para si tiene respaldo."""
+        return self._tiene_respaldo
+    
+    @tiene_respaldo.setter
+    def tiene_respaldo(self, value: bool) -> None:
+        """Setter para si tiene respaldo."""
+        self._tiene_respaldo = value
+    
+    @property
+    def material_tapizado(self) -> str:
+        """Getter para el material del tapizado."""
+        return self._material_tapizado
+    
+    @material_tapizado.setter
+    def material_tapizado(self, value: str) -> None:
+        """Setter para el material del tapizado."""
+        self._material_tapizado = value
+    
+    def calcular_factor_comodidad(self) -> float:
+        """
+        Calcula un factor de comodidad basado en las características del asiento.
+        
+        Returns:
+            float: Factor de comodidad entre 0.8 y 2.0
+        """
+        factor = 1.0
+        
+        if self.tiene_respaldo:
+            factor += 0.2
+        
+        if self.material_tapizado:
+            if self.material_tapizado.lower() == "cuero":
+                factor += 0.3
+            elif self.material_tapizado.lower() == "tela":
+                factor += 0.1
+        
+        # Limitar el factor entre 0.8 y 2.0
+        return max(0.8, min(2.0, factor))
+    
+    @abstractmethod
+    def calcular_precio(self) -> float:
+        """
+        Calcula el precio final del asiento.
+        Debe ser implementado por las clases concretas.
+        
+        Returns:
+            float: Precio final calculado
+        """
         pass
     
-    # TODO: Implementar propiedades (getters) para los nuevos atributos
-    # @property
-    # def capacidad_personas(self) -> int:
-    #     """Getter para la capacidad de personas."""
-    #     return self._capacidad_personas
-    
-    # TODO: Implementar setters con validaciones apropiadas
-    # @capacidad_personas.setter
-    # def capacidad_personas(self, value: int) -> None:
+    @abstractmethod
+    def obtener_descripcion(self) -> str:
+        """
+        Obtiene una descripción detallada del asiento.
+        Debe ser implementado por las clases concretas.
+        
+        Returns:
+            str: Descripción completa del asiento
+        """
+        pass
     #     """Setter para capacidad con validación."""
     #     if value <= 0:
     #         raise ValueError("La capacidad debe ser mayor a 0")
